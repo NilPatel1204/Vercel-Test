@@ -1,0 +1,31 @@
+---
+import SwiperSlide from "../components/Swiper-Slide.astro";
+
+const api_URL = import.meta.env.PUBLIC_ApiUrl;
+
+const ArticleResponse = `${api_URL}/api/resource/Article?fields=["*"]`;
+
+const Article_data_api = await fetch(ArticleResponse, {
+  method: "GET",
+  headers: {
+    Authorization: `token ${import.meta.env.PUBLIC_ApiKey}:${import.meta.env.PUBLIC_SecretKey}`, // Replace with your token
+  },
+});
+
+const Article_data_json = await Article_data_api.json();
+const Article = Article_data_json.data;
+---
+
+<div class="w-auto swiper-wrapper">
+  {
+    Article.map((item: any) => (
+      <SwiperSlide
+        headTag={item.title}
+        paragraph={item.description}
+        Name={item.name1}
+        URL={item.url}
+        Image={item.featured_image}
+      />
+    ))
+  }
+</div>

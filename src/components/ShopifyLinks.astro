@@ -1,0 +1,28 @@
+---
+const { ImageUrl, Label, slug, activeSlug } = Astro.props;
+
+const api_URL = import.meta.env.PUBLIC_ApiUrl;
+---
+
+<a
+  href={slug}
+  class={`flex px-[8px] py-[6px] rounded-xl ${activeSlug || "hover:bg-[#E9F6FF] group"} space-x-3 items-center`}
+>
+  <div
+    class=`h-8 w-8 rounded-full content-center justify-items-center group-hover:bg-white  ${activeSlug || "bg-[#E9F6FF]"}`
+  >
+    <img src=`${api_URL}${ImageUrl}` alt="link-icon" />
+  </div>
+
+  <p class="font-medium text-[16px] xl:leading-7">{Label}</p>
+</a>
+
+<style>
+  .activeClass {
+    background-color: #e9f6ff;
+  }
+
+  .activeClass div {
+    background-color: white;
+  }
+</style>

@@ -1,0 +1,23 @@
+---
+const { Label, hrefLink, rounded, activeSlug } = Astro.props;
+---
+
+<li class=`cursor-pointer hover:bg-[#E9F6FF] ${ rounded || ""}`>
+  <a
+    href={`${hrefLink || "#"}`}
+    class=`block w-full px-2 py-1 lg:px-4 lg:py-2 ${activeSlug}`
+  >
+    {Label}
+  </a>
+</li>
+
+<style>
+  .activeClass {
+    background-color: #e9f6ff;
+    border-radius: 12px;
+  }
+
+  .activeClassMobile {
+    background-color: #e9f6ff;
+  }
+</style>

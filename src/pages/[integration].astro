@@ -1,0 +1,202 @@
+---
+// Components
+import MobileMenu from "../components/MobileMenu.astro";
+import Layout from "../layouts/Layout.astro";
+import ShopifyLinks from "../components/ShopifyLinks.astro";
+import Dropdown from "../components/Dropdown.astro";
+import Carousel from "../components/Carousel.astro";
+
+const { Slug } = Astro.params;
+const URL = import.meta.env.PUBLIC_ApiUrl as String;
+
+export async function getStaticPaths() {
+  const API_URL_PATH = import.meta.env.PUBLIC_ApiUrl as String;
+  const api_url = await fetch(
+    `${API_URL_PATH}/api/resource/Simprosys%20Post%20Category?fields=["*"]&limit_page_length=1000`,
+    {
+      method: "GET",
+      headers: {
+        Authorization: `token ${import.meta.env.PUBLIC_ApiKey}:${import.meta.env.PUBLIC_SecretKey}`,
+      },
+    }
+  );
+
+  const api_url_json = await api_url.json();
+  const api_url_data = api_url_json.data;
+
+  const paths = api_url_data.map((integration_data: any) => ({
+    params: { integration: integration_data.slug }, // Pass slug here
+    props: {
+      name: integration_data.name,
+      slug: integration_data.slug, // Include slug as part of the props
+    },
+  }));
+  return paths;
+}
+
+const { integration, slug } = Astro.params;
+const { name, slug: propSlug } = Astro.props;
+// Fetch data related to the integration
+const integration_details_api = await fetch(
+  `${URL}/api/resource/Simprosys%20Post%20Category/${name}`,
+  {
+    method: "GET",
+    headers: {
+      Authorization: `token ${import.meta.env.PUBLIC_ApiKey}:${import.meta.env.PUBLIC_SecretKey}`,
+    },
+  }
+);
+
+const integration_details_json = await integration_details_api.json();
+const integration_details = integration_details_json.data;
+
+
+const parentCategory = integration_details.parent_simprosys_post_category
+
+
+const CategoryResponse = await fetch(
+  `${URL}/api/resource/Simprosys%20Post%20Category?fields=["*"]&filters=[["parent_simprosys_post_category", "=", "${parentCategory}"], ["category_criteria", "=", "Category"],["status","=","publish"]]&order_by=\`order\` asc`,
+  {
+    method: "GET",
+    headers: {
+      Authorization: `token ${import.meta.env.PUBLIC_ApiKey}:${import.meta.env.PUBLIC_SecretKey}`,
+    },
+  }
+);
+const categoryDataJson = await CategoryResponse.json();
+const CategoryData = categoryDataJson.data || [];
+
+
+const encodedName = encodeURIComponent(name);
+
+// Fetch Subcategories directly from API
+const subCategoryResponse = await fetch(
+  `${URL}/api/resource/Simprosys%20Post%20Category?fields=["*"]&filters=[["parent_simprosys_post_category", "=", "${encodedName}"], ["category_criteria", "=", "Subcategory"],["status","=","publish"]]&order_by=\`order\` asc`,
+  {
+    method: "GET",
+    headers: {
+      Authorization: `token ${import.meta.env.PUBLIC_ApiKey}:${import.meta.env.PUBLIC_SecretKey}`,
+    },
+  }
+);
+
+const subCategoryJson = await subCategoryResponse.json();
+const subCategoryData = subCategoryJson.data || [];
+
+
+// Fetch Platform directly from API
+const platformResponse = await fetch(
+  `${URL}/api/resource/Simprosys%20Post%20Category?fields=["*"]&filters=[["name", "=", "${integration_details.parent_simprosys_post_category}"]]`,
+  {
+    method: "GET",
+    headers: {
+      Authorization: `token ${import.meta.env.PUBLIC_ApiKey}:${import.meta.env.PUBLIC_SecretKey}`,
+    },
+  }
+);
+
+const platformJson = await platformResponse.json();
+const platform = platformJson.data || [];
+---
+
+<Layout
+  Title="Shopify Product Feed and Google Shopping Ads Management App by Simprosys"
+  meta_title={integration_details.meta_title}
+  meta_={integration_details.meta_tag}
+>
+  <main>
+    <Carousel />
+    <section
+      class="mt-[30px] sm:mt-[50px] md:mt-[64px] lg:mt-[70px] xl:mt-[85px] 2xl:mt-[70px] md:mb-[-64px] 2xl:mb-[-140px]"
+    >
+      <!-- <div class="mx-[20px] md:mx-[26px] 2xl:mx-[97.5px] lg:mx-[50px] "> -->
+      <div class="mx-[20px] md:mx-[26px] 2xl:mx-[125px] lg:mx-[50px]">
+        <div class="grid lg:grid-cols-12">
+          <div class="hidden lg:block lg:mt-[-70px] xl:mt-[-134px] space-y-8 lg:col-span-4 xl:col-span-3 md:border-r">
+            <p class="text-base text-[#6D6F71] lg:mt-[70px] xl:mt-[134px]">
+              Support by Platform
+            </p>
+            {
+              platform.map((item:any) => (
+                <img src=`${URL}${item.platform_logo}` alt={item.name}/>
+              ))
+            }
+            <div class="space-y-4 text-[#55575A] lg:pr-2 2xl:pr-[46px] lg:pb-4">
+              {
+                CategoryData.map((item:any) => (
+                  <ShopifyLinks
+                    ImageUrl={item.icon_image}
+                    Label={item.name}
+                    slug={item.slug}
+                    activeSlug={integration_details.slug === item.slug ? 'activeClass' : ''}
+                  />
+                ))
+              }
+            </div>
+          </div>
+
+          
+          <div
+            class="lg:col-start-5 xl:col-start-5 md:px-2 lg:col-span-8 xl:col-span-7 lg:px-8 xl:px-0"
+          >
+            <div
+              class="mt-[20px] md:mt-[0px] md:pt-[0px] space-y-8 xl:space-y-16 mb-[30px] md:mb-[50px] lg:mb-[92px]"
+            >
+              <div class="">
+                <div class="space-y-8">
+                  
+                  <div class="flex space-x-[10px]">
+                    <a
+                      href="../../"
+                      class="text-[#25282B] text-[14px] hover:underline"
+                      >Home
+                    </a>
+                    <p class="text-[16px] leading-[22px] text-[#929495]">></p>
+                    
+                    <a href={integration_details.slug} class="flex  space-x-2 font-medium hover:underline text-[14px] leading-[22px]">
+                      <img class="h-[20px]" src={platform[0]?.icon
+                          ? `${URL}${platform[0].icon}`
+                          : ""}
+                    alt={platform[0]?.name ? `${platform[0].name}` : ""} />
+                      <span>
+                        {integration_details.name}
+                        </span>
+                    </a>
+                  </div>
+
+                  <div class="flex flex-grow space-x-3 xl:space-x-6 items-start">
+                  
+                    <div class="bg-[#E9F6FF] p-4 lg:p-5 rounded-full aspect-square w-[110px] flex items-center justify-center">
+                      <img class="w-10" src=`${URL}${integration_details.icon_image}` alt="icon" />
+                    </div>
+                    <div class="xl:space-y-2">
+                      <h1
+                        class="font-semibold text-[18px] xl:text-[40px] xl:leading-[54px]"
+                      >
+                        {integration_details.name}
+                      </h1>
+                      <p class="text-sm xl:text-base text-[#25282B]">
+                        {integration_details.description}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                {
+                  subCategoryData.map((item:any) => (
+                    <Dropdown heading={item.name} />
+                  ))
+                }
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Mobile View -->
+      <MobileMenu category={CategoryData} platform={platform} , slug={integration_details.slug} />
+    </section>
+  </main>
+  <script src="../../src/assets/static/integration-list.js"></script>
+</Layout>

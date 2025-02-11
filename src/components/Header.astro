@@ -1,0 +1,34 @@
+---
+import logo from '../assets/img/logo.png';
+---
+<header id="header" class="w-full z-[1000]">
+	<!-- Navbar Section  -->
+	<nav class="bg-[#195279] text-white overflow-hidden">
+		<div class="lg:bg-[#195279] mx-[20px] md:mx-[26px] 2xl:mx-[125px] lg:mx-[50px] space-y-10">
+			<div class="ssm:flex justify-items-center  ssm:justify-between items-center text-white py-3 font-light gap-[1.6rem] space-y-4 ssm:space-y-0">
+				<!-- Logo -->
+				<a href="../../">
+					<img class="h-[2.5rem] md:h-[56px] md:w-[204.53px] ml-2" src={logo.src} alt="Logo">
+				</a>
+
+				<!-- Navigation Menu -->
+				<ul class="flex gap-4 ssm:gap-[9px] sm:gap-4 ssm:justify-center items-center">
+					<!-- Support Home Link -->
+					<a href="../../"
+						class="font-normal md:mx-2 text-lg bg-[#D6E9F8] text-[#195279] px-4 sm:py-[10px] rounded-full">
+						<li>
+							<p class="text-[11px] sssm:text-[13px] sm:text-[17px]">Support Home</p>
+						</li>
+					</a>
+
+					<!-- Simprosys Home Link -->
+					<a href="https://simprosys.com/" class="font-medium text-lg md:mx-2 px-4 sm:py-[10px] rounded-full hover:bg-[#D6E9F8] hover:text-[#195279]" target="_blank">
+						<li>
+							<p class="text-[11px] sssm:text-[13px] sm:text-[17px]">Simprosys Home</p>
+						</li>
+					</a>
+				</ul>
+			</div>
+		</div>
+	</nav>
+</header>

@@ -1,0 +1,85 @@
+---
+import Cart from "../assets/img/cart.svg";
+import StarRating from "../components/StarRating.astro";
+// import VectorHalf from '.../assets/img/vector-half.svg'
+
+interface Props {
+  headTag?: string;
+  paragraphTag?: string;
+  review?: String;
+  hrefLink?: String;
+  newLabel?: String;
+  CTAButton?: String;
+  rating?: number;
+  slug?: String;
+  Icon?: String;
+}
+
+const {
+  headTag,
+  paragraphTag,
+  review,
+  hrefLink,
+  newLabel,
+  CTAButton,
+  rating,
+  slug,
+  Icon,
+} = Astro.props;
+
+const api_URl = import.meta.env.PUBLIC_ApiUrl;
+
+// Helper function to limit the number of words
+function truncateWords(text: string | undefined, limit: number): string {
+  if (!text) return ""; // Return an empty string if text is undefined or null
+  const words = text.split(" ");
+  return words.length > limit ? words.slice(0, limit).join(" ") + "..." : text;
+}
+---
+
+<div
+  class="relative flex flex-col justify-between pb-[18px] rounded-2xl space-y-6 border border-sm bg-white"
+>
+  <a href={`./${slug}`} class="space-y-6 pt-4 sm:pt-8">
+    <div class="space-y-6 px-4 sm:px-8">
+      <div class="bg-[#E9F6FF] p-5 rounded-full w-fit">
+        <img class="h-10 w-10" src=`${api_URl}${Icon}` alt={headTag} />
+      </div>
+      <div class="space-y-6 xl:space-y-[8px] 2xl:space-y-[11px]">
+        <h3 class="font-semibold text-2xl text-[#25282B]">{headTag}</h3>
+        <p class="font-normal text-base text-[#3D3F42]">
+          {truncateWords(paragraphTag, 11)}
+        </p>
+      </div>
+    </div>
+    <div
+      class=`absolute ${newLabel || "hidden"} right-[0%] top-[0%] bg-[#69D519] rounded-tl-md rounded-bl-md px-2 lg:px-3 py-1`
+    >
+      <p class="text-base text-white italic font-bold">{newLabel}</p>
+    </div>
+  </a>
+  <div
+    class="pt-4 sssm:flex mx-4 lg:mx-8 sm:grid sm:grid-cols-2 sm:space-x-5 md:space-x-10 xl:space-x-17 lg:p-0 lg:pt-4 2xl:pt-[18px] border-t justify-between lg:justify-items-between items-center space-y-2 sm:space-y-0 sm:text-right"
+  >
+    <div class="flex sm:h-[24px] sm:w-[200px] lg:w-[240px] space-x-1">
+      <!-- <div class="flex"> -->
+      <div
+        class="flex 2xl:gap-[2px] xl:space-x-1 2xl:space-x-2 items-center justify-between"
+      >
+        <StarRating Rating={Number(rating)} />
+        <div>
+          <p class="text-[14px] lg:text-base text-[#55575A]">
+            {review} Reviews
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="sm:pt-2 lg:pt-0">
+      <a
+        href={`${hrefLink}`}
+        class="button bg-[#195279] text-white px-2 py-1 md:px-4 md:py-[6px] text-sm md:text-base rounded-full hover:shadow-lg"
+        >{CTAButton}</a
+      >
+    </div>
+  </div>
+</div>

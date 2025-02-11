@@ -1,0 +1,19 @@
+{
+  "name": "simprosys",
+  "type": "module",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "astro dev",
+    "build:vercel": "astro build",
+    "build:frappe": "astro build --base=/assets/support_simprosys/support_simprosys/assets",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/tailwind": "^5.1.4",
+    "astro": "^5.1.1",
+    "he": "^1.2.0",
+    "swiper": "^11.2.0",
+    "tailwindcss": "^3.4.17"
+  }
+}

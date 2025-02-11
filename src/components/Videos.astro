@@ -1,0 +1,32 @@
+---
+// Image
+import PlayIcon from "../assets/img/play-icon.svg";
+
+const { Src, Href, Title } = Astro.props;
+
+function truncateCharacters(text: string | undefined, limit: number): string {
+  if (!text) return "";
+  return text.length > limit ? text.slice(0, limit) + "..." : text;
+}
+---
+
+<a
+  href=`https://youtube.com/watch?v=${Href}`
+  class="relative group block w-full aspect-[16/8.7]"
+  target="_blank"
+>
+  <img
+    class="w-full h-full object-cover rounded-lg"
+    src={Src}
+    alt="video-image"
+  />
+  <div
+    class="absolute w-full bg-[#25282B] text-white p-2 bottom-0 hidden group-hover:flex items-center space-x-1 lg:space-x-2 rounded-b-lg">
+    <img class="h-[20px] lg:h-auto" src={PlayIcon.src} alt="play-icon" />
+    <p
+      class="font-semibold text-[5px] sm:text-[9px] xl:text-[13px] 3xl:text-sm ml-1"
+    >
+      {truncateCharacters(Title, 70)}
+    </p>
+  </div>
+</a>

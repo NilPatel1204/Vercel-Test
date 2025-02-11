@@ -1,0 +1,132 @@
+---
+// Images
+import shopify from "../assets/img/shopify.png";
+import shopifyIcon from "../assets/img/shopify-icon.png";
+import cart from "../assets/img/cart.svg";
+
+// Components
+import MobileMenu from "../components/MobileMenu.astro";
+import Layout from "../layouts/Layout.astro";
+import ShopifyLinks from "../components/ShopifyLinks.astro";
+import Dropdown from "../components/Dropdown.astro";
+import Carousel from "../components/Carousel.astro";
+---
+
+<Layout Title="Shopify Product Feed and Google Shopping Ads Management App by Simprosys" meta_title="" meta_desc="">
+    <main>
+        <Carousel />
+        <section class="mt-[30px] sm:mt-[50px] md:mt-[64px] lg:mt-[70px] xl:mt-[85px] 2xl:mt-[70px] md:mb-[-64px] 2xl:mb-[-140px]">
+            <!-- <div class="mx-[20px] md:mx-[26px] 2xl:mx-[97.5px] lg:mx-[50px] "> -->
+            <div class="mx-[20px] md:mx-[26px] 2xl:mx-[125px] lg:mx-[50px]">
+                <div class="grid lg:grid-cols-12">
+                    <div class="hidden lg:block lg:mt-[-70px] xl:mt-[-134px] space-y-8 lg:col-span-4 xl:col-span-3 md:border-r">
+                        <p class="text-base text-[#6D6F71] lg:mt-[70px] xl:mt-[134px]">
+                            Support by Platform
+                        </p>
+                        <img src={shopify.src} alt="Shopify-Image" />
+                        <div class="space-y-4 text-[#55575A] lg:pr-2 2xl:pr-[46px]">
+                            <ShopifyLinks
+                                ImageUrl="../../public/images/icon_google_shopping_feed.svg"
+                                Label="Simprosys Google Shopping Feed"
+                            />
+                            <ShopifyLinks
+                                ImageUrl="../../public/images/icon_proviews_product_reviews.svg"
+                                Label="Proviews Product Reviews Q&A"
+                            />
+                            <ShopifyLinks
+                                ImageUrl="../../public/images/icon_manufacturer_feed.svg"
+                                Label="Simprosys Manufacturer Feed"
+                            />
+                            <ShopifyLinks
+                                ImageUrl="../../public/images/icon_bing_shopping.svg"
+                                Label="FeedAPIs For Bing Shopping /MS"
+                            />
+                            <ShopifyLinks
+                                ImageUrl="../../public/images/icon_simprosys_customer_match_lists.svg"
+                                Label="Simprosys Customer Match Lists"
+                            />
+                            <ShopifyLinks
+                                ImageUrl="../../public/images/icon_product_question_and_answer.svg"
+                                Label="SMPS Product Question & Answer"
+                            />
+                        </div>
+                    </div>
+
+                    <div class="lg:col-start-5 xl:col-start-5 md:px-2 lg:col-span-8 xl:col-span-7 lg:px-8 xl:px-0">
+                        <div class="mt-[20px] md:mt-[0px] md:pt-[0px] space-y-8 xl:space-y-16 mb-[30px] md:mb-[50px] lg:mb-[92px]">
+                            <div class="">
+                                <div class="space-y-8">
+                                    <div class="hidden space-x-[10px] sm:flex">
+                                        <a
+                                            href="/support-index"
+                                            class="text-[#25282B] text-[14px] hover:underline"
+                                            >Home
+                                        </a>
+                                        <p class="text-[16px] leading-[22px]">
+                                            >
+                                        </p>
+                                        <img
+                                            class="h-full"
+                                            src={shopifyIcon.src}
+                                            alt=""
+                                        />
+                                        <a
+                                            href="/integration-list"
+                                            class="font-medium hover:underline text-[14px] leading-[22px]"
+                                            >Simprosys Google Shopping Feed</a
+                                        >
+                                    </div>
+                                    <div class="flex space-x-3 xl:space-x-6 items-center">
+                                        <img
+                                            class="h-full"
+                                            src={cart.src}
+                                            alt=""
+                                        />
+                                        <div class="xl:space-y-2">
+                                            <h1 class="font-semibold text-[18px] xl:text-[40px] xl:leading-[54px]">
+                                                Simprosys Google Shopping Feed
+                                            </h1>
+                                            <p class="text-sm xl:text-lg text-[#25282B]">
+                                                Submits Feed For Google
+                                                Shopping, Facebook Ads &
+                                                Microsoft Ads.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <Dropdown
+                                    heading="Installation"
+                                    fontSize="text-3xl"
+                                />
+                                <Dropdown heading="App-Processes - GSF" />
+                                <Dropdown
+                                    heading="Product Attributes and Optimization - GSF"
+                                />
+                                <Dropdown
+                                    heading="Product Errors and their Fixes - GSF"
+                                />
+                                <Dropdown
+                                    heading="Facebook (Meta) Shopping - GSF"
+                                />
+                                <Dropdown
+                                    heading="Automated Rule for Feed - GSF"
+                                />
+                                <Dropdown heading="Google Shopping - GSF" />
+                                <Dropdown
+                                    heading="Microsoft (Bing) Shopping - GSF"
+                                />
+                                <Dropdown heading="Pinterest Shopping - GSF" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Mobile View -->
+            <MobileMenu />
+        </section>
+    </main>
+    <!-- <script src="../../src/assets/static/integration-list.js"></script> -->
+</Layout>

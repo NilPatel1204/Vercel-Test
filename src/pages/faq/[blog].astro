@@ -1,0 +1,322 @@
+---
+import he from "he";
+// Images
+import homeIcon from "../../assets/img/home-icon.svg";
+// Components
+import Carousel from "../../components/Carousel.astro";
+// import MobileMenu from "../components/MobileMenu.astro";
+import Layout from "../../layouts/Layout.astro";
+import DetailDropdown from "../../components/DetailDropdown.astro";
+import MobileDropdown from "../../components/MobileDropdown.astro";
+
+const API_URL = import.meta.env.PUBLIC_ApiUrl;
+export async function getStaticPaths() {
+  const url = import.meta.env.PUBLIC_ApiUrl;
+  const api_url = await fetch(
+    `${url}/api/resource/Simprosys%20Blog?fields=["*"]&limit_page_length=1000`,
+    {
+      method: "GET",
+      headers: {
+        Authorization: `token ${import.meta.env.PUBLIC_ApiKey}:${import.meta.env.PUBLIC_SecretKey}`,
+      },
+    }
+  );
+
+  const api_url_json = await api_url.json();
+  const api_url_data = api_url_json.data;
+
+  const paths = api_url_data.map((blog_data: any) => ({
+    params: { blog: blog_data.slug }, // Pass slug here
+    props: {
+      name: blog_data.name,
+      slug: blog_data.slug, // Include slug as part of the props
+    },
+  }));
+  return paths;
+}
+
+const { blog, slug } = Astro.params;
+const { name, slug: propSlug } = Astro.props;
+
+const encodedName = encodeURIComponent(name);
+//  Fetching Blog Data
+const blog_details_api = await fetch(
+  `${API_URL}/api/resource/Simprosys%20Blog/${encodedName}`,
+  {
+    method: "GET",
+    headers: {
+      Authorization: `token ${import.meta.env.PUBLIC_ApiKey}:${import.meta.env.PUBLIC_SecretKey}`,
+    },
+  }
+);
+
+const blog_details_json = await blog_details_api.json();
+const blog_details = blog_details_json.data;
+
+// Decode the content details
+const decodedContent = he.decode(blog_details.content_details);
+
+// Fetching Subcategory Data
+const SubCategoryResponse = await fetch(
+  `${API_URL}/api/resource/Simprosys%20Post%20Category?fields=["*"]&filters=[["name","=","${blog_details.post_category}"],["status","=","publish"]]&order_by=\`order\` asc`,
+  {
+    method: "GET",
+    headers: {
+      Authorization: `token ${import.meta.env.PUBLIC_ApiKey}:${import.meta.env.PUBLIC_SecretKey}`,
+    },
+  }
+);
+
+const subCategoryDataJson = await SubCategoryResponse.json();
+const SubCategoryData = subCategoryDataJson.data || [];
+const encodeSubCategory = encodeURIComponent(
+  SubCategoryData[0].parent_simprosys_post_category
+);
+// Fetching Category Data
+const CategoryResponse = await fetch(
+  `${API_URL}/api/resource/Simprosys%20Post%20Category?fields=["*"]&filters=[["parent_simprosys_post_category", "=", "${encodeSubCategory}"], ["category_criteria", "=", "Subcategory"],["status","=","publish"]]&order_by=\`order\` asc`,
+  {
+    method: "GET",
+    headers: {
+      Authorization: `token ${import.meta.env.PUBLIC_ApiKey}:${import.meta.env.PUBLIC_SecretKey}`,
+    },
+  }
+);
+const categoryDataJson = await CategoryResponse.json();
+const CategoryData = categoryDataJson.data || [];
+let Parent_Slug = "No Slug Found"; // Declare outside
+let Platform = "#";
+let Icon = "";
+
+if (CategoryData.length > 0) {
+  const ParentCategoryName = CategoryData[0].parent_simprosys_post_category;
+
+  const ParentCategoryResponse = await fetch(
+    `${API_URL}/api/resource/Simprosys%20Post%20Category?filters=[["name", "=", "${ParentCategoryName}"]]&fields=["slug","parent_simprosys_post_category","icon_image"]`,
+    {
+      method: "GET",
+      headers: {
+        Authorization: `token ${import.meta.env.PUBLIC_ApiKey}:${import.meta.env.PUBLIC_SecretKey}`,
+      },
+    }
+  );
+  const ParentCategoryJson = await ParentCategoryResponse.json();
+  const ParentCategoryData = ParentCategoryJson.data || [];
+
+  // Assign value inside the block
+  if (ParentCategoryData.length > 0) {
+    Parent_Slug = ParentCategoryData[0].slug;
+    Platform = ParentCategoryData[0].parent_simprosys_post_category;
+    Icon = ParentCategoryData[0].icon_image;
+  }
+}
+
+const platformResponse = await fetch(
+  `${API_URL}/api/resource/Simprosys%20Post%20Category?fields=["*"]&filters=[["name", "=", "${Platform}"]]`,
+  {
+    method: "GET",
+    headers: {
+      Authorization: `token ${import.meta.env.PUBLIC_ApiKey}:${import.meta.env.PUBLIC_SecretKey}`,
+    },
+  }
+);
+const platformJson = await platformResponse.json();
+const platform = platformJson.data || [];
+
+const blogs_api = await fetch(
+  `${API_URL}/api/resource/Simprosys%20Blog?filters=[["post_category","=","${blog_details.post_category}"]]&fields=["name", "slug"]&order_by=\`order\` asc`,
+  {
+    method: "GET",
+    headers: {
+      Authorization: `token ${import.meta.env.PUBLIC_ApiKey}:${import.meta.env.PUBLIC_SecretKey}`,
+    },
+  }
+);
+
+const blogs_json = await blogs_api.json();
+const blogs = blogs_json.data || [];
+
+const currentIndex = blogs.findIndex((blog: any) => {
+  return (
+    blog.name.trim().toLowerCase() === blog_details.name.trim().toLowerCase()
+  );
+});
+
+// Get previous and next blog
+const prevBlog = currentIndex > 0 ? blogs[currentIndex - 1] : null;
+const nextBlog =
+  currentIndex < blogs.length - 1 ? blogs[currentIndex + 1] : null;
+---
+
+<Layout
+  Title=`${blog_details.name}`
+  meta_title={blog_details.meta_title}
+  meta_desc={blog_details.meta_tag}
+>
+  <main class="lg:mb-[-64px] 2xl:mb-[-140px]">
+    <Carousel />
+    <section>
+      <!-- Mobile View -->
+
+      <div class="mx-[20px] md:mx-[26px] 2xl:mx-[125px] lg:mx-[50px]">
+        <div class="grid lg:grid-cols-12">
+          <div
+            class="hidden lg:block space-y-8 lg:col-span-4 xl:col-span-3 md:border-r pt-[30px] sm:pt-[50px] md:pt-[64px] lg:pt-[70px] xl:pt-[85px] 2xl:pt-[70px]"
+          >
+            <div class="space-y-[30px]">
+              <div
+                class="flex space-x-6 items-center lg:pr-[23px] 2xl:pr-[46px]"
+              >
+                <div
+                  class="bg-[#E9F6FF] p-5 rounded-full aspect-square flex items-center justify-center"
+                >
+                  <img
+                    class="h-full w-[44.2px]"
+                    src=`${API_URL}${Icon}`
+                    alt="icon"
+                  />
+                </div>
+                <h1 class="text-xl lg:text-2xl">
+                  {CategoryData[0].parent_simprosys_post_category}
+                </h1>
+              </div>
+            </div>
+            <div>
+              <div class="pr-2 lg:pr-[23px] 2xl:pr-[46px]">
+                {
+                  CategoryData.map((item: any, index: number) => (
+                    <DetailDropdown
+                      heading={item.name}
+                      round="rounded-[12px]"
+                      Slug={blog_details.slug}
+                      DropdownClass="dropdown-details cursor-pointer"
+                      index={index}
+                    />
+                  ))
+                }
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="xl:col-start-5 lg:px-8 xl:px-0 lg:col-span-8 xl:col-span-7 pt-[30px] sm:pt-[50px] md:pt-[64px] lg:pt-[70px] xl:pt-[85px] 2xl:pt-[70px]"
+          >
+            <div
+              class="mt-[20px] md:mt-[0px] md:pt-[0px] space-y-8 xl:space-y-16 mb-[50px] lg:mb-[92px]"
+            >
+              <div class="space-y-6">
+                <div class="space-y-8">
+                  <div class="flex space-x-1 lg:space-x-2">
+                    <a
+                      href="../../"
+                      class="text-[#25282B] text-sm opacity-70 hover:underline"
+                    >
+                      <span class="ssm:hidden">
+                        <img
+                          class="w-[22px]"
+                          src={homeIcon.src}
+                          alt="home-icon"
+                        />
+                      </span>
+                      <span class="hidden ssm:block"> Home </span>
+                    </a>
+                    <p class="text-[16px] leading-[22px] text-[#929495]">></p>
+                    <a
+                      href=`/${Parent_Slug}`
+                      class="flex items-start whitespace-pre-line xl:whitespace-pre-line md:overflow-hidden md:text-ellipsis xl:w-auto font-medium hover:underline text-sm ssm:space-x-1"
+                    >
+                      <img
+                        class="w-[22px] ssm:w-auto ssm:h-auto"
+                        src={platform[0]?.icon
+                          ? `${API_URL}${platform[0].icon}`
+                          : ""}
+                        alt={platform[0]?.name ? `${platform[0].name}` : ""}
+                      />
+                      <span
+                        class="hidden ssm:block overflow-hidden text-ellipsis whitespace-nowrap text-[#25282B] opacity-70"
+                        >{CategoryData[0].parent_simprosys_post_category}
+                      </span>
+                    </a>
+
+                    <p class="text-[16px] leading-[22px] text-[#929495]">></p>
+                    <p
+                      class="text-[#25282B] whitespace-pre-line xl:whitespace-nowrap md:overflow-hidden md:text-ellipsis opacity-70 font-medium hover:underline text-sm"
+                      title=`${SubCategoryData[0].name}`
+                    >
+                      {SubCategoryData[0].name}
+                    </p>
+                    <p
+                      class="hidden sm:flex text-[16px] leading-[22px] text-[#929495]"
+                    >
+                      >
+                    </p>
+                    <a
+                      href={blog_details.slug}
+                      class="hidden sm:flex text-[#25282B] whitespace-pre-line xl:whitespace-nowrap md:overflow-hidden md:text-ellipsis font-medium hover:underline text-sm"
+                      title=`${blog_details.name}`>{blog_details.name}</a
+                    >
+                  </div>
+                </div>
+
+                <div class="space-y-8">
+                  <div
+                    class=`flex ${blog_details.featured_image ? "space-x-2 item-start xl:items-center" : ""}`
+                  >
+                    <div
+                      class=`p-5 ${blog_details.featured_image ? "" : "hidden"} h-fit rounded-full w-fit bg-[#E9F6FF] content-center`
+                    >
+                      <img
+                        class="w-16"
+                        src=`${API_URL}${blog_details.featured_image}`
+                        alt="featured-icon"
+                      />
+                    </div>
+                    <div>
+                      <h2
+                        class="font-semibold text-2xl lg:text-[40px] lg:leading-[54px]"
+                      >
+                        {blog_details.name}
+                      </h2>
+                    </div>
+                  </div>
+                  <div class="ql-editor read-mode" set:html={decodedContent} />
+                  <div class="border-t pt-5 lg:pt-10 text-center lg:text-start">
+                    <div
+                      class=`text-base grid lg:grid-cols-12 space-y-5 lg:space-y-0 gap-2 `
+                    >
+                      <div
+                        class={`lg:col-span-6 lg:space-y-3 ${prevBlog ? "" : ""}`}
+                      >
+                        <p class=`font-semibold ${prevBlog ? "" : "hidden"}`>
+                          Previous article
+                        </p>
+                        <p class="text-[#195279] hover:underline">
+                          <a href={prevBlog ? `/faq/${prevBlog.slug}` : "#"}
+                            >{prevBlog?.name || ""}</a
+                          >
+                        </p>
+                      </div>
+                      <div
+                        class={`lg:col-span-6 lg:justify-items-end lg:space-y-3 lg:text-right ${nextBlog ? "" : "hidden"}`}
+                      >
+                        <p class="font-semibold">Next article</p>
+                        <p class="text-[#195279] hover:underline">
+                          <a href={nextBlog ? `/faq/${nextBlog.slug}` : "#"}
+                            >{nextBlog?.name || ""}</a
+                          >
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <MobileDropdown Data={CategoryData} Slug={blog_details.slug} />
+  </main>
+  <!-- <script src="../../src/assets/static/integration-list.js"></script> -->
+</Layout>

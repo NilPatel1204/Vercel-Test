@@ -1,0 +1,97 @@
+---
+import union from "../assets/img/union.svg";
+import arrow from "../assets/img/arrow.png";
+import clock from "../assets/img/clock.svg";
+
+interface Props {
+  headTag?: any;
+  paragraph?: any;
+  Name?: String;
+  URL?: String;
+  Image?: String;
+}
+
+const { headTag, paragraph, Name, URL, Image } = Astro.props;
+
+// Function to truncate text based on length
+function truncateCharacters(text: string | undefined, limit: number): string {
+  if (!text) return "";
+  return text.length > limit ? text.slice(0, limit) + "..." : text;
+}
+---
+
+<style>
+  /* Mobile */
+  @media (max-width: 640px) {
+    .truncate-head::after {
+      content: attr(data-mobile);
+    }
+    .truncate-paragraph::after {
+      content: attr(data-mobile);
+    }
+  }
+
+  /* Tablet */
+  @media (min-width: 641px) and (max-width: 1024px) {
+    .truncate-head::after {
+      content: attr(data-tablet);
+    }
+    .truncate-paragraph::after {
+      content: attr(data-tablet);
+    }
+  }
+
+  /* Desktop */
+  @media (min-width: 1025px) {
+    .truncate-head::after {
+      content: attr(data-desktop);
+    }
+    .truncate-paragraph::after {
+      content: attr(data-desktop);
+    }
+  }
+</style>
+
+<a
+  href=`${URL || "#"}`
+  target="_blank"
+  class="p-6 md:p-8 space-y-8 bg-[#E9F6FF] relative group rounded-2xl swiper-slide h-full self-stretch"
+>
+  <!-- Content Section -->
+  <div class="space-y-4 pb-4">
+    <div class="space-x-6">
+      <h3
+        class="text-2xl font-semibold text-[#3D3F42] truncate-head"
+        data-mobile={truncateCharacters(headTag, 30)}
+        data-tablet={truncateCharacters(headTag, 50)}
+        data-desktop={truncateCharacters(headTag, 55)}
+      >
+      </h3>
+    </div>
+    <p
+      class="text-base text-[#3D3F42] truncate-paragraph"
+      data-mobile={truncateCharacters(paragraph, 70)}
+      data-tablet={truncateCharacters(paragraph, 120)}
+      data-desktop={truncateCharacters(paragraph, 135)}
+    >
+    </p>
+
+    <!-- Metadata Section -->
+    <div class="sm:flex sm:space-x-4 sm:pt-4 space-y-3 sm:space-y-0">
+      <div class="px-2 py-1 rounded-[3px] bg-white gap-[10px]">
+        <p class="text-[12px] leading-6">{Name}</p>
+      </div>
+      <div class="flex gap-[10px] w-auto h-auto py-1 items-center">
+        <img class="h-4 w-4" src={clock.src} alt="clock icon" />
+        <p class="text-base leading-4">4:00 minutes read</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Image Section -->
+  <div class="relative w-full h-auto">
+    <img class="rounded-2xl w-full" src=`${Image}` alt="slide-image" />
+    <img class="absolute bottom-0 right-0" src={union.src} alt="union-icon" />
+    <img class="absolute bottom-0 right-0" src={arrow.src} alt="arrow-icon" />
+  </div>
+</a>

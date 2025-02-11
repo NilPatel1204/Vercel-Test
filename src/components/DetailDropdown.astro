@@ -1,0 +1,44 @@
+---
+import ToggleArrow from "../assets/img/toggle-arrow.png"; // Ensure correct path to the image
+import DetailDropdownLinks from "./DetailDropdownLinks.astro";
+
+const { heading, borderClass, round, Slug, DropdownClass, index } = Astro.props;
+
+const API_URL = import.meta.env.PUBLIC_ApiUrl;
+const BlogResponse = await fetch(
+  `${API_URL}/api/resource/Simprosys%20Blog?fields=["*"]&filters=[["post_category", "=", "${heading}"],["status","=","publish"]]&order_by=\`order\` asc`,
+  {
+    method: "GET",
+    headers: {
+      Authorization: `token ${import.meta.env.PUBLIC_ApiKey}:${import.meta.env.PUBLIC_SecretKey}`,
+    },
+  }
+);
+const BlogJson = await BlogResponse.json();
+const Blog = BlogJson.data || [];
+---
+
+<div class={`${borderClass || "border-t"}`}>
+  <div
+    class={`${DropdownClass || "dropdown cursor-pointer"} flex py-4 justify-between w-full`}
+  >
+    <h3 class="text-base font-medium">{heading}</h3>
+    <img class="arrow-icon h-full" src={ToggleArrow.src} alt="Toggle Arrow" />
+  </div>
+  <div
+    class="toggle-section py-4 xl:pb-8 hidden max-h-[300px] overflow-y-auto xl:max-h-full"
+  >
+    <ul class="font-medium text-[#55575A] text-sm space-y-3 xl:text-[16px]">
+      {
+        Blog.map((item: any) => (
+          <DetailDropdownLinks
+            hrefLink={item.slug}
+            Label={item.name}
+            rounded={round}
+            activeSlug={Slug === item.slug ? "activeClassMobile" : ""}
+          />
+        ))
+      }
+    </ul>
+  </div>
+</div>

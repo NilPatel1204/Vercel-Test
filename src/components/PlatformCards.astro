@@ -1,0 +1,59 @@
+---
+import Card from "./Card.astro";
+
+interface Props {
+  dataPlatform?: String;
+  Display?: String;
+  class?: String;
+  classButton?: string;
+}
+
+const { dataPlatform, Display, classButton } = Astro.props;
+const api_URL = import.meta.env.PUBLIC_ApiUrl;
+
+const fetchCategoryData = async () => {
+  try {
+    const response = await fetch(
+      `${api_URL}/api/resource/Simprosys%20Post%20Category?fields=["*"]&filters=[["parent_simprosys_post_category", "=", "${dataPlatform}"], ["category_criteria", "=", "Category"],["status","=","publish"]]&order_by=\`order\` asc`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `token ${import.meta.env.PUBLIC_ApiKey}:${import.meta.env.PUBLIC_SecretKey}`,
+        },
+      }
+    );
+
+    const jsonData = await response.json();
+    return jsonData.data || []; // Ensure data is always an array
+  } catch (error) {
+    console.error("Error fetching category data:", error);
+    return []; // Return empty array on failure
+  }
+};
+
+// Wait for the category data to be fetched
+const categoryData = await fetchCategoryData();
+---
+
+<!-- Shopify Card Section  -->
+<div
+  class=`${classButton || "platform-content" } space-y-5 sm:space-y-0 grid sm:grid-cols-2 xl:grid-cols-3 mt-[30px] sm:gap-6 sm:w-full content-center`
+  style=`display:${Display || 'none;' }`
+  data-platform={dataPlatform}
+>
+  {
+    categoryData.map((item: any) => (
+      <Card
+        Icon={item.icon_image}
+        slug={item.slug}
+        headTag={item.name}
+        paragraphTag={item.description}
+        review={item.review}
+        hrefLink={item.header_url}
+        rating={item.rating}
+        newLabel={item.tag}
+        CTAButton={item.cta_button}
+      />
+    ))
+  }
+</div>

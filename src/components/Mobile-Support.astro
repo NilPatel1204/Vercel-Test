@@ -1,0 +1,53 @@
+---
+import Platform from "../components/Platform.astro";
+import PlatformCards from "../components/PlatformCards.astro";
+
+const api_URL = import.meta.env.PUBLIC_ApiUrl;
+
+// Assuming the necessary setup for token and API URL
+const api_url = `${api_URL}/api/resource/Simprosys%20Post%20Category?fields=["*"]&filters=[["category_criteria","=","Platform"],["status","=","publish"]]&order_by=\`order\` asc`;
+
+const Platform_data_api = await fetch(api_url, {
+  method: "GET",
+  headers: {
+    Authorization: `token ${import.meta.env.PUBLIC_ApiKey}:${import.meta.env.PUBLIC_SecretKey}`,
+  },
+});
+
+const Platform_data_json = await Platform_data_api.json();
+const Platform_data = Platform_data_json.data; // Get the data from the response
+---
+
+<section
+  class="mt-[30px] sm:mt-[50px] md:mt-[64px] lg:mt-[70px] xl:mt-[85px] 2xl:mt-[140px]"
+>
+  <div class="mx-[20px] md:mx-[26px] 2xl:mx-[125px] lg:mx-[50px] space-y-10">
+    <h2 class="text-4xl sm:text-[42px] lg:text-5xl font-light text-[#25282B]">
+      Find Support by Platform
+    </h2>
+    <div
+      class="py-2 lg:py-0 platform space-y-4 sm:space-y-0 sm:grid sm:grid-cols-4 mt-[48px] bg-[#F5FBFF] gap-8 px-4 sm:w-full lg:h-[100px] xl:h-[117px] content-center rounded-2xl"
+    >
+      {
+        Platform_data.map((platform:any) => (
+            <Platform
+                imageSrc={platform.platform_logo}
+                alternateText={platform.alternateText}
+                dataPlatform={platform.name}
+                active={platform.name === "Shopify" ? "active-mobile-button" : ""}
+                classButton="button-platform"
+            />
+            <PlatformCards
+                dataPlatform={platform.name}
+                Display={platform.name === "Shopify" ? "grid;" : "none;"}
+                classButton="platform-mobile-content"
+            />
+        ))
+      }
+    </div>
+    <!-- Cards Sectino Start -->
+  </div>
+</section>
+<!-- Support Section End -->
+
+<script src="../../src/assets/static/mobile-support.js"></script>

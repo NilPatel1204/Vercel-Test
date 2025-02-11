@@ -1,0 +1,243 @@
+body {
+  font-family: "Poppins", serif;
+}
+
+.rotate {
+  transform: rotate(180deg);
+  transition: transform 0.3s ease-in-out;
+}
+
+.platform-btn.active-button {
+  background-color: #ffffff; /* Replace with your desired active background color */
+  filter: grayscale(0);
+  opacity: 1;
+}
+
+.button-platform.active-mobile-button{
+  background-color: #ffffff; /* Replace with your desired active background color */
+  filter: grayscale(0);
+  opacity: 1;
+}
+
+/* Blog Page Css */
+
+
+.ql-editor {
+  word-break: break-word;
+  color: #25282B;
+  font-size: 16px;
+  line-height: 20px;
+}
+
+/* Headings */
+.ql-editor h1 {
+  font-size: 32px;
+  line-height: 40px;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+}
+
+.ql-editor h2 {
+  font-size: 24px;
+  line-height: 32px;
+  margin-bottom: 1.563rem;
+  font-weight: 600;
+}
+
+.ql-editor h3 {
+  font-size: 20px;
+  line-height: 18px;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.ql-editor h4 {
+  font-size: 18px;
+  line-height: 24px;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+}
+
+.ql-editor h5 {
+  font-size: 16px;
+  line-height: 22px;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.ql-editor h6 {
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+/* Paragraphs */
+.ql-editor p {
+  font-size: 16px;
+  line-height: 20px;
+  margin-bottom: 1rem;
+}
+
+/* Lists */
+.ql-editor ul,
+.ql-editor ol {
+  margin-bottom: 2rem;
+  padding-left: 20px;
+}
+
+.ql-editor ul li {
+  list-style-type: disc;
+  margin-bottom: 0.75rem;
+  line-height: 24px;
+}
+
+.ql-editor ol li {
+  list-style-type: decimal;
+  margin-bottom: 0.75rem;
+  line-height: 24px;
+}
+
+/* Tables */
+.ql-editor table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1rem;
+  border-collapse: separate;
+}
+
+.ql-editor table thead {
+  background-color: #B6B7B8;
+  opacity: 1;
+  font-size: 16px;
+  line-height: 16px;
+  padding: 8px;
+}
+
+.ql-editor table th,td span{
+  background-color: transparent !important;
+}
+
+.ql-editor table th {
+  background-color: #B6B7B8;
+  font-size: 16px;
+  line-height: 16px;
+  font-weight: bold;
+  padding: 8px;
+}
+
+.ql-editor table td {
+  padding: 8px;
+  border: 1px solid #ccc;
+}
+
+.ql-editor table tr:nth-child(even) {
+  background-color: #CECFCF;
+}
+
+.ql-editor table tr:nth-child(odd) {
+  background-color: #E6E7E7;
+}
+
+/* QL - EDITOR */
+.ql-editor iframe {
+    width: 100%;
+    height: 400px; /* Adjust as needed */
+    display: block;
+}
+
+.ql-editor a {
+  color: #007bff;
+  text-decoration: underline;
+}
+
+.ql-editor a:hover {
+  color: #0056b3;
+}
+
+/* Blockquotes */
+.ql-editor blockquote {
+  border-left: 4px solid #ccc;
+  padding-left: 1rem;
+  font-style: italic;
+  color: #555;
+  margin-bottom: 1rem;
+}
+
+/* Code Blocks */
+.ql-editor pre {
+  background-color: #f4f4f4;
+  padding: 10px;
+  border-radius: 5px;
+  overflow-x: auto;
+  font-family: monospace;
+}
+
+.ql-editor code {
+  background-color: #f8f9fa;
+  padding: 2px 4px;
+  font-family: monospace;
+  border-radius: 4px;
+}
+
+/* Images */
+.ql-editor img {
+  max-width: 100%;
+  height: auto;
+  margin-bottom: 1rem;
+}
+
+/* Media Queries for Large Screens */
+@media (min-width: 1280px) {
+  .ql-editor table thead{
+    font-size: 18px;
+    line-height: 18px;
+  }
+
+  .ql-editor h1 {
+    font-size: 48px;
+    line-height: 60px;
+  }
+
+  .ql-editor h2 {
+    font-size: 40px;
+    line-height: 54px;
+  }
+
+  .ql-editor h3 {
+    font-size: 28px;
+    line-height: 36px;
+  }
+
+  .ql-editor h4 {
+    font-size: 24px;
+    line-height: 30px;
+  }
+
+  .ql-editor h5 {
+    font-size: 20px;
+    line-height: 26px;
+  }
+
+  .ql-editor h6 {
+    font-size: 18px;
+    line-height: 24px;
+  }
+
+  .ql-editor p {
+    font-size: 18px;
+    line-height: 30px;
+  }
+
+  .ql-editor table th,
+  .ql-editor table td {
+    font-size: 18px;
+    line-height: 18px;
+  }
+}
+
+@media (max-height: 730px) {
+  .content-section {
+    display: none;
+  }
+}

@@ -1,0 +1,32 @@
+---
+// StarRating.astro
+import fullStar from "../assets/img/vector.svg";
+import halfStar from "../assets/img/halfStar.svg";
+import emptyStar from "../assets/img/emptyStar.svg"; // You need to create an empty star SVG
+
+interface Props {
+  Rating: number;
+}
+
+const { Rating } = Astro.props;
+
+const fullStars = Math.floor(Rating);
+const hasHalfStar = Rating % 1 !== 0;
+const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+---
+
+<div
+  class="flex 2xl:gap-[2px] 2xl:space-x-[2px] items-center justify-between"
+>
+  {
+    Array.from({ length: fullStars }, (_, i) => (
+      <img src={fullStar.src} alt="full-star" />
+    ))
+  }
+  {hasHalfStar && <img src={halfStar.src} alt="half-star" />}
+  {
+    Array.from({ length: emptyStars }, (_, i) => (
+      <img src={emptyStar.src} alt="empty-star" />
+    ))
+  }
+</div>

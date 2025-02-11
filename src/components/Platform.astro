@@ -1,0 +1,24 @@
+---
+interface Props {
+  imageSrc?: string;
+  alternateText?: string;
+  active?: string;
+  dataPlatform?: string;
+  classButton?: string;
+}
+const api_URL = import.meta.env.PUBLIC_ApiUrl;
+
+const { imageSrc, alternateText, active, dataPlatform, classButton } =
+  Astro.props;
+---
+
+<button
+  class=`${active || ''} rounded-[10px] w-full py-4 lg:py-4 md:px-2 relative group content-center justify-items-center grayscale opacity-60 ${ classButton || "platform-btn" }`
+  data-platform={dataPlatform}
+>
+  <img
+    class="hover:bg-[#FFFFFF] m-auto"
+    src=`${api_URL}${imageSrc}`
+    alt={alternateText}
+  />
+</button>

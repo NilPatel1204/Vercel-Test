@@ -1,0 +1,30 @@
+---
+import DetailDropdown from "./DetailDropdown.astro";
+
+const { Data , Slug } = Astro.props;
+---
+
+<div
+  class="lg:hidden width-[25%] space-y-8 md:col-span-4 mt-10 px-6 lg:col-span-3 md:border-r"
+>
+  <div class="space-y-[30px]">
+    <div class="flex space-x-6 items-center">
+      <h3 class="text-2xl font-bold">Simprosys Google Shopping Feed</h3>
+    </div>
+  </div>
+  <div>
+    <div class="pr-2 lg:pr-[46px] space-y-2">
+      {
+        Data.map((item: any, index: number) => (
+          <DetailDropdown
+            heading={item.name}
+            borderClass="border px-4"
+            index={index}
+            DropdownClass="dropdown-details cursor-pointer"
+            Slug={Slug}
+          />
+        ))
+      }
+    </div>
+  </div>
+</div>

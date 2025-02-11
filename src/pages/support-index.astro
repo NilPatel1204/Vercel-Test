@@ -1,0 +1,250 @@
+---
+// Images
+import FrameImage from "../assets/img/frameImage.png";
+import LeftArrow from "../assets/img/left-arrow.png";
+import RightArrow from "../assets/img/right-arrow.png";
+import Search from "../assets/img/search.svg";
+import SearchNote from "../assets/img/searchNote.svg";
+
+// Components
+import Layout from "../layouts/Layout.astro";
+import Slider from "../components/Slider.astro";
+import Videos from "../components/Videos.astro";
+import MobileSupport from "../components/Mobile-Support.astro";
+import Support from "../components/Support.astro";
+
+const api_URL = import.meta.env.PUBLIC_ApiUrl;
+const YoutubeResponse = `${api_URL}/api/resource/Simprosys%20Youtube%20Data?fields=["*"]`;
+
+const Youtube_data_api = await fetch(YoutubeResponse, {
+  method: "GET",
+  headers: {
+    Authorization: `token ${import.meta.env.PUBLIC_ApiKey}:${import.meta.env.PUBLIC_SecretKey}`,
+  },
+});
+
+const Youtube_data_json = await Youtube_data_api.json();
+const youtubeData = Youtube_data_json.data;
+---
+
+<Layout
+  Title="Support Simprosys - Simprosys InfoMedia Help Centre"
+  meta_title=""
+  meta_desc=""
+>
+  <main>
+    <!-- Image Section Start -->
+    <section class="bg-cover bg-center m-[20px] lg:m-[30px]">
+      <div
+        class="h-[50vh] xl:h-[calc(100vh-140px)] flex flex-wrap content-center text-center justify-center relative bg-cover bg-center rounded-br-[48px] rounded-tl-[48px]"
+        style={`background-image: url(${FrameImage.src})`}
+        ;
+      >
+        <div class="space-y-6">
+          <!-- Header Text -->
+          <div class="gap-4 px-2">
+            <p
+              class="font-bold text-xl sm:text-2xl xl:text-[34px] md:leading-8 text-white"
+            >
+              We’re here for you
+            </p>
+            <h1
+              class="font-bold text-2xl sm:text-4xl xl:text-5xl xl:leading-[68px] text-white"
+            >
+              Welcome to Simprosys Support Center
+            </h1>
+          </div>
+
+          <!-- Search Bar -->
+          <div class="space-y-6">
+            <div class="flex items-center justify-center relative px-[20px]">
+              <div class="relative w-full md:w-[90%] lg:w-full">
+                <div
+                  class="absolute inset-y-0 start-0 flex items-center ps-4 pointer-events-none pl-5"
+                >
+                  <img src={Search.src} alt="searchIcon" />
+                </div>
+                <input
+                  id="searchInput"
+                  type="text"
+                  class="w-full py-2 font-normal text-base text-[#25282B] pl-10 lg:py-3 border border-gray-300 rounded-full shadow-sm focus:ring-2 focus:outline-none sm:text-base focus:placeholder:opacity-0 placeholder:text-[#25282B]"
+                  placeholder="Search Simprosys Support"
+                  required
+                />
+              </div>
+
+              <div
+                id="searchResults"
+                class="absolute z-10 w-full md:w-[90%] lg:w-full top-[110%] hidden px-5 rounded-t-2xl rounded-b-2xl"
+              >
+              </div>
+            </div>
+          </div>
+
+          <!-- Links Section -->
+          <div
+            class="content-section px-5 sm:px-11 flex flex-wrap sm:flex-row sm:items-center justify-center gap-2"
+          >
+            <a
+              href="javascript:void(0);"
+              class="link-item px-2 py-1 md:px-3 md:py-2 bg-[#133953] bg-opacity-50 text-white rounded-full font-normal text-sm md:text-base hover:bg-opacity-100"
+            >
+              Shopify Feed
+            </a>
+            <a
+              href="javascript:void(0);"
+              class="link-item px-2 py-1 md:px-3 md:py-2 bg-[#133953] bg-opacity-50 text-white rounded-full font-normal text-sm md:text-base hover:bg-opacity-100"
+            >
+              Google Shopping Feed
+            </a>
+            <a
+              href="javascript:void(0);"
+              class="link-item px-2 py-1 md:px-3 md:py-2 bg-[#133953] bg-opacity-50 text-white rounded-full font-normal text-sm md:text-base hover:bg-opacity-100"
+            >
+              Manufacturing Feed
+            </a>
+            <a
+              href="javascript:void(0);"
+              class="link-item px-2 py-1 md:px-3 md:py-2 bg-[#133953] bg-opacity-50 text-white rounded-full font-normal text-sm md:text-base hover:bg-opacity-100"
+            >
+              Shopping Feed
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Image Section End -->
+
+    <!-- Support Section Start -->
+
+    <div class="sm:hidden">
+      <MobileSupport />
+    </div>
+    <div class="hidden sm:block">
+      <Support />
+    </div>
+    <!-- Support Section End -->
+
+    <!-- Support Article Section Start -->
+    <section
+      class="mt-[30px] sm:mt-[50px] md:mt-[64px] lg:mt-[70px] xl:mt-[85px] 2xl:mt-[140px]"
+    >
+      <div class="mx-[20px] md:mx-[26px] 2xl:mx-[125px] lg:mx-[50px]">
+        <div class="sm:w-auto sm:flex space-y-2 sm:space-y-0 sm:space-x-6">
+          <!-- Title Section -->
+          <div class="sm:w-[860px] md:w-[1250px] lg:w-[1190px] xl:w-[1237px]">
+            <h2 class="text-4xl sm:text-5xl text-[#25282B]">
+              <span>Recent</span><br />
+              Support Articles
+            </h2>
+          </div>
+          <!-- Description Section -->
+          <div>
+            <h2 class="text-[17px] sm:text-[20px] font-normal text-[#3D3F42]">
+              Lorem Ipsum is simply dummy text of the printing and typesetting
+              industry. Lorem Ipsum has been the industry's standard dummy text
+              ever since the 1500s, when an unknown printer took a galley of
+              type and scrambled it to make a type specimen book.
+            </h2>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Support Article Section End-->
+
+    <!-- Ads Section Start -->
+    <section class="relative mt-[30px] sm:mt-[50px] md:mt-[64px]">
+      <div
+        class="mx-[20px] md:mx-[26px] 2xl:mx-[125px] lg:mx-[50px] mySwiper overflow-hidden"
+      >
+        <!-- Swiper Wrapper -->
+        <Slider />
+        <!-- Slider Wrapper End -->
+
+        <!-- Navigation Buttons -->
+        <div class="btn flex text-start justify-center lg:justify-end gap-5">
+          <button
+            class="z-10 lg:absolute bottom-[-10%] sm:top-[40%] sm:left-[3%] lg:left-[1%]
+                               text-white rounded-full flex justify-center items-center py-10 w-[58px] h-[58px]
+                               sm:py-12 lg:py-0 sm:h-16 sm:w-16 bg-opacity-50 text-xl2 slide-prev"
+          >
+            <img
+              class="hover:shadow-sm hover:rounded-full"
+              src={LeftArrow.src}
+              alt="leftArrow-icon"
+            />
+          </button>
+          <button
+            class="z-10 lg:absolute bottom-[-10%] sm:top-[40%] sm:right-[3%] lg:right-[1%]
+                               text-white rounded-full flex justify-center items-center py-10 w-[58px] h-[58px]
+                               sm:py-12 lg:py-0 sm:h-16 sm:w-16 bg-opacity-50 text-xl2 slide-next"
+          >
+            <img
+              class="hover:shadow-sm hover:rounded-full"
+              src={RightArrow.src}
+              alt="rightArrow-icon"
+            />
+          </button>
+        </div>
+      </div>
+    </section>
+    <!-- Ads Section End -->
+
+    <!-- Recent Videos Section Start -->
+    <section
+      class="mt-[30px] sm:mt-[50px] md:mt-[64px] lg:mt-[70px] xl:mt-[85px] 2xl:mt-[140px]"
+    >
+      <div class="mx-[20px] md:mx-[26px] 2xl:mx-[125px] lg:mx-[50px]">
+        <div
+          class="md:grid md:grid-cols-12 md:space-x-[22px] space-y-[24px] md:space-y-0"
+        >
+          <!-- Left Section: Heading and Button -->
+          <div class="md:col-span-4 lg:col-span-3 sm:relative sm:pb-[20px]">
+            <div class="gap-4 space-y-3">
+              <h2 class="text-4xl xl:text-[48px] text-[#25282B] font-normal">
+                Recent Videos
+              </h2>
+              <p class="text-base text-[#25282B]">
+                Check out our official
+                <a
+                  href=`https://www.youtube.com/@Simprosys`
+                  class="text-[#195279] underline"
+                  target="_blank">YouTube channel</a
+                >
+                to help you get the most from our apps.
+              </p>
+              <div>
+                <a
+                  href="https://www.youtube.com/playlist?list=PLP8SfH94PvkutaokHZvsTwg6WKuQQZVmo"
+                  class="border px-3 py-2 lg:px-5 lg:py-3 xl:px-8 xl:py-4 rounded-full hover:border-black text-[#195279] hover:text-black border-[#195279] text-sm lg:text-base md:absolute md:bottom-1"
+                  target="_blank">See all video tutorials</a
+                >
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Section: Video Thumbnails -->
+          <div
+            class="md:col-span-8 lg:col-span-9 grid grid-cols-2 lg:grid-cols-3 gap-4 xl:gap-[22px]"
+          >
+            {
+              youtubeData.map((item: any) => (
+                <Videos
+                  Src={item.image}
+                  Href={item.video_id}
+                  Title={item.title}
+                />
+              ))
+            }
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Recent Videos Section End  -->
+  </main>
+
+  <script src="../../src/assets/static/search.js"></script>
+  <script src="../../src/assets/static/swiper.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"
+  ></script>
+</Layout>
