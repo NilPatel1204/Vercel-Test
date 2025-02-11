@@ -4,7 +4,7 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "astro dev",
-    "build:vercel": "astro build",
+    "build": "astro build",
     "build:frappe": "astro build --base=/assets/support_simprosys/support_simprosys/assets",
     "preview": "astro preview",
     "astro": "astro"
