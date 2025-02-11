@@ -7,9 +7,9 @@ export default defineConfig({
   integrations: [tailwind()],
   build: {
     format: isFrappeBuild ? "file" : undefined, // Conditional format
-    outDir: isFrappeBuild
-      ? "dist/assets/support_simprosys/support_simprosys/assets"
-      : "dist", // Conditional output directory
+    // outDir: isFrappeBuild
+    //   ? "dist/assets/support_simprosys/support_simprosys/assets"
+    //   : "dist", // Conditional output directory
   },
   base: isFrappeBuild
     ? "/assets/support_simprosys/support_simprosys/assets"
