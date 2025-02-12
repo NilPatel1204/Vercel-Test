@@ -1,19 +1,8 @@
 {
-  "version": 2,
   "builds": [
     {
-      "src": "package.json",
+      "src": "src/index.js",
       "use": "@vercel/node"
-    },
-    {
-      "src": "astro.config.js",
-      "use": "@astro/renderer-react"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "/index.html"
     }
   ]
 }
