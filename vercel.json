@@ -1,14 +1,19 @@
 {
+  "version": 2,
   "builds": [
     {
       "src": "package.json",
-      "use": "@vercel/node",
-      "config": {
-        "includeFiles": ["./dist/**"]
-      }
+      "use": "@vercel/node"
+    },
+    {
+      "src": "astro.config.js",
+      "use": "@astro/renderer-react"
     }
   ],
-  "env": {
-    "FRAPPE_API_URL": "https://simprosys.frappe.cloud"
-  }
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
+    }
+  ]
 }
