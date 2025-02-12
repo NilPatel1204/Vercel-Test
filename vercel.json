@@ -1,0 +1,14 @@
+{
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/node",
+      "config": {
+        "includeFiles": ["./dist/**"]
+      }
+    }
+  ],
+  "env": {
+    "FRAPPE_API_URL": "https://simprosys.frappe.cloud"
+  }
+}

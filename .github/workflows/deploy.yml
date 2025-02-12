@@ -1,0 +1,46 @@
+name: Deploy Astro Site
+
+# Trigger the workflow on push to main or staging branches or manually
+on:
+  push:
+    branches:
+      - main  # Trigger on changes to production branch
+      - staging  # Trigger on changes to staging branch
+  workflow_dispatch:  # Allows manual trigger from GitHub Actions UI
+
+jobs:
+  build:
+    runs-on: ubuntu-latest  # Specify the operating system for the runner
+
+    steps:
+    # Step 1: Checkout the repository
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+
+    # Step 2: Set up Node.js environment
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'  # Specify Node.js version for your Astro project
+
+    # Step 3: Install dependencies
+    - name: Install Dependencies
+      run: npm install  # Install all required dependencies from package.json
+
+    # Step 4: Fetch data from Frappe API (Custom Step)
+    - name: Fetch Frappe Data
+      run: |
+        curl -X GET "$FRAPPE_API_URL/api/method/my.custom.endpoint" -o src/data.json  # Replace with your Frappe API URL
+
+    # Step 5: Build Astro Project
+    - name: Build Astro
+      run: |
+        npm run build  # Replace with `npm run build:staging` if deploying to staging
+
+    # Step 6: Deploy to Vercel (Production or Staging)
+    - name: Deploy to Vercel
+      uses: amondnet/vercel-action@v20  # This action deploys to Vercel
+      with:
+        vercel-token: ${{ secrets.VERCEL_TOKEN }}  # Set this in GitHub Secrets
+        vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}  # Set this in GitHub Secrets
+        vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}  # Set this in GitHub Secrets

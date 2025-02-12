@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
-    "build:frappe": "astro build --base=/assets/support_simprosys/support_simprosys/assets",
+    "build:frappe": "BUILD_TARGET=frappe astro build --base=/assets/support_simprosys/support_simprosys/assets",
+    "build:staging": "BUILD_TARGET=staging astro build",
     "preview": "astro preview",
     "astro": "astro"
   },
